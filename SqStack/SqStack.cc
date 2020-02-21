@@ -40,6 +40,7 @@ bool GetTop(SqStack *s, ElemType &e)
 	return true;
 }
 
+//判断回文算法
 bool symmetry(ElemType *str)
 {
 	int i;
