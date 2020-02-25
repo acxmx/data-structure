@@ -1,6 +1,6 @@
 #ifndef BLLIST
 #define BLLIST
-#include<cdtsio>
+#include<cstdio>
 #include<cstdlib>
 
 typedef char ElemType;
@@ -11,5 +11,19 @@ typedef struct node
 	struct node *rchild;
 }BTNode;
 
+void CreateBTree(BTNode * &, char *);
+void DestroyBTree(BTNode * &);
+BTNode * FindLChild(BTNode *);
+BTNode * FindRChild(BTNode *);
+BTNode * FindNode(BTNode *, ElemType);
+int BTreeHeight(BTNode *);
+void DispBTree(BTNode *);
+// traveling binarytree
+void PreTravel(BTNode *);
+void InTravel(BTNode *);
+void PostTravel(BTNode *);
+int NodesCount(BTNode *);
+void DispLeaf(BTNode *);
+int Level(BTNode *, ElemType, int);
 
 #endif
