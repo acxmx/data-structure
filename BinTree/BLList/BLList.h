@@ -22,8 +22,12 @@ void DispBTree(BTNode *);
 void PreTravel(BTNode *);
 void InTravel(BTNode *);
 void PostTravel(BTNode *);
+//recursion applying
 int NodesCount(BTNode *);
 void DispLeaf(BTNode *);
 int Level(BTNode *, ElemType, int);
+void LevelNodesCount(BTNode *, int, int, int &);
+bool BTreeLike(BTNode *, BTNode *);
+bool Ancestor(BTNode *, ElemType);
 
 #endif

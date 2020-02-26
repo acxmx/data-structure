@@ -178,3 +178,57 @@ int Level(BTNode *btree_p, ElemType find_data, int height)
 			return (btree_p->rchild,find_data,height+1);
 	}
 }
+
+//层级结点数计算 --> 重点在于层级
+void LevelNodesCount(BTNode *btree_p, int height_now, int height_goal
+, int &count)
+{
+	if(btree_p == NULL)
+		return ;
+	else
+	{
+		if(height_now == height_goal)
+			count++;
+		else if(height_now < height_goal)
+		{
+			LevelNodesCount(btree_p->lchild, height_now+1
+			, height_goal, count);
+			LevelNodesCount(btree_p->rchild, height_now+1
+			, height_goal, count);
+		}
+	}
+}
+
+bool BTreeLike(BTNode *btree_p1, BTNode *btree_p2)
+{
+	if(btree_p1 == NULL && btree_p2 == NULL)
+		return true;
+	else if(btree_p1 == NULL || btree_p2 == NULL)
+		return false;
+	else
+	{
+		bool like1 = BTreeLike(btree_p1->lchild, btree_p2->lchild);
+		bool like2 = BTreeLike(btree_p1->rchild, btree_p2->rchild);
+		return (like1 && like2);
+	}
+}
+
+bool Ancestor(BTNode *btree_p, ElemType data)
+{
+	if(btree_p == NULL)
+		return false;
+	else if(btree_p->lchild != NULL && btree_p->lchild->data == data
+	|| btree_p->rchild != NULL && btree_p->rchild->data == data)
+	{
+		printf("%c",btree_p->data);
+		return true;
+	}
+	else if(Ancestor(btree_p->lchild, data) 
+	|| Ancestor(btree_p->rchild, data))
+	{
+		printf("%c",btree_p->data);
+		return true;
+	}
+	else
+		return false;
+}
