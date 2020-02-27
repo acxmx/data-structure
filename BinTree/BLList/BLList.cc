@@ -4,6 +4,7 @@ void CreateBTree(BTNode * &btree_p, char *str)
 {
 	BTNode *node_stack[50], *node;
 	int top = -1, index = 0, flag;
+	btree_p = NULL;  //尽量在定义指针时进行指针的初始化
 	char ch = str[index];
 	while(ch != '\0')
 	{
@@ -23,6 +24,7 @@ void CreateBTree(BTNode * &btree_p, char *str)
 			default:
 				node = (BTNode *)malloc(sizeof(BTNode));
 				node->data = ch;
+				node->lchild = node->rchild = NULL;  //一定要记得初始化指针域
 				if(!btree_p)
 					btree_p = node;
 				else
@@ -46,7 +48,7 @@ void CreateBTree(BTNode * &btree_p, char *str)
 
 void DestroyBTree(BTNode * &btree_p)
 {
-	if(btree_p)
+	if(btree_p != NULL)
 	{
 		DestroyBTree(btree_p->lchild);
 		DestroyBTree(btree_p->rchild);
@@ -64,25 +66,25 @@ BTNode * FindRChild(BTNode *btree_p)
 	return (btree_p->rchild);
 }
 
-BTNode * FindNode(BTNode *btree_p, ElemType elem)
+BTNode * FindNode(BTNode *btree_p, ElemType data)
 {
 	if(btree_p == NULL)
 		return NULL;
-	else if(btree_p->data == elem)
+	else if(btree_p->data == data)
 		return btree_p;
 	else
 	{
-		BTNode *found_node = FindNode(btree_p->lchild, elem);
+		BTNode *found_node = FindNode(btree_p->lchild, data);
 		if(found_node)
 			return found_node;
 		else
-			FindNode(btree_p->rchild, elem);
+			return FindNode(btree_p->rchild, data);
 	}
 }
 
 int BTreeHeight(BTNode *btree_p)
 {
-	if(!btree_p)
+	if(btree_p == NULL)
 		return 0;
 	else
 	{
@@ -94,10 +96,11 @@ int BTreeHeight(BTNode *btree_p)
 
 void DispBTree(BTNode *btree_p)
 {
-	if(btree_p)
+	if(btree_p != NULL)
 	{
 		printf("%c",btree_p->data);
-		if(btree_p->lchild || btree_p->rchild)
+		if(btree_p->lchild != NULL
+		|| btree_p->rchild != NULL)
 		{
 			printf("(");
 			DispBTree(btree_p->lchild);
@@ -111,17 +114,22 @@ void DispBTree(BTNode *btree_p)
 
 void PreTravel(BTNode *btree_p)
 {
-	if(btree_p)
+	if(btree_p != NULL)
 	{
 		printf("%c",btree_p->data);
 		PreTravel(btree_p->lchild);
 		PreTravel(btree_p->rchild);
 	}
+#if 0  
+此乃递归出口，因为函数返回值是void类型，因此可缺省，由编译器默认执行
+	else
+		return ;
+#endif
 }
 
 void InTravel(BTNode *btree_p)
 {
-	if(btree_p)
+	if(btree_p != NULL)
 	{
 		InTravel(btree_p->lchild);
 		printf("%c",btree_p->data);
@@ -131,7 +139,7 @@ void InTravel(BTNode *btree_p)
 
 void PostTravel(BTNode *btree_p)
 {
-	if(btree_p)
+	if(btree_p != NULL)
 	{
 		PostTravel(btree_p->lchild);
 		PostTravel(btree_p->rchild);
@@ -149,7 +157,7 @@ int NodesCount(BTNode *btree_p)
 }
 
 void DispLeaf(BTNode *btree_p)
-{
+{		
 	if(btree_p != NULL)
 	{
 		if(btree_p->lchild == NULL
@@ -157,8 +165,8 @@ void DispLeaf(BTNode *btree_p)
 			printf("%c\t",btree_p->data);
 		else
 		{
-		DispLeaf(btree_p->lchild);
-		DispLeaf(btree_p->rchild);
+			DispLeaf(btree_p->lchild);
+			DispLeaf(btree_p->rchild);
 		}
 	}
 }
@@ -175,7 +183,7 @@ int Level(BTNode *btree_p, ElemType find_data, int height)
 		if(height2 != 0)
 			return height2;
 		else
-			return (btree_p->rchild,find_data,height+1);
+			return (Level(btree_p->rchild,find_data,height+1));
 	}
 }
 
@@ -213,6 +221,7 @@ bool BTreeLike(BTNode *btree_p1, BTNode *btree_p2)
 	}
 }
 
+//输出祖先，那么如何判断祖先呢？祖先的定义、逆向思考：从子孙结点的定义出发
 bool Ancestor(BTNode *btree_p, ElemType data)
 {
 	if(btree_p == NULL)

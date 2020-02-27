@@ -13,11 +13,11 @@ typedef struct node
 
 void CreateBTree(BTNode * &, char *);
 void DestroyBTree(BTNode * &);
+void DispBTree(BTNode *);
 BTNode * FindLChild(BTNode *);
 BTNode * FindRChild(BTNode *);
 BTNode * FindNode(BTNode *, ElemType);
 int BTreeHeight(BTNode *);
-void DispBTree(BTNode *);
 // traveling binarytree
 void PreTravel(BTNode *);
 void InTravel(BTNode *);

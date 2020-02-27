@@ -8,7 +8,6 @@ int main()
 	CreateBTree(btree_p,str);
 	DispBTree(btree_p);
 	printf("\n");
-#if 0
 	printf("根结点的左孩子结点：%p\t"
 	"右孩子结点：%p\n",
 	FindLChild(btree_p),FindRChild(btree_p));
@@ -24,11 +23,10 @@ int main()
 	printf("nodes count:%d\n",NodesCount(btree_p));
 	DispLeaf(btree_p);
 	printf("\n");
-#endif
-	printf("'E'in the height:%d\n",
-	Level(btree_p, 'E', 1));
+	printf("'C'in the height:%d\n",
+	Level(btree_p, 'C', 1));
 	val = 0;
-	int a = 1, b = 2, count=0;
+	int a = 1, b = 3, count=0;
 	LevelNodesCount(btree_p,a,b,count);
 	printf("level 3 nodes count:%d\n", count);
 	printf("Ancestors of node 'E':\n");
