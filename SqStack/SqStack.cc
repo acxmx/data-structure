@@ -1,63 +1,74 @@
 #include"SqStack.h"
 
-void InitStack(SqStack * &s)
+void InitStack(SqStack * &stack_p)
 {
-	s = (SqStack *)malloc(sizeof(SqStack));
-	s->top = -1;
+	stack_p = (SqStack *)malloc(sizeof(SqStack));
+	stack_p->top = -1;
 }
 
-void DestroyStack(SqStack * &s)
+void DestroyStack(SqStack * &stack_p)
 {
-	free(s);
+	free(stack_p);
 }
 
-bool StackEmpty(SqStack *s)
+bool StackEmpty(SqStack *stack_p)
 {
-	return (s->top == -1);
+	return (stack_p->top == -1);
 }
 
-bool Push(SqStack * &s, ElemType e)
+bool Push(SqStack * &stack_p, ElemType elem)
 {
-	if(s->top == MaxSize-1)
+	if(stack_p->top == MaxSize-1)
 		return false;
-	s->data[++s->top] = e;
-	return true;
+	else
+	{
+		stack_p->top++;
+		stack_p->data[stack_p->top] = elem;
+		return true;
+	}
 }
 
-bool Pop(SqStack * &s, ElemType &e)
+bool Pop(SqStack * &stack_p, ElemType &elem)
 {
-	if(StackEmpty(s))
+	if(StackEmpty(stack_p))
 		return false;
-	e = s->data[s->top--];
-	return true;
+	else
+	{
+		elem = stack_p->data[stack_p->top];
+		stack_p->top--;
+		return true;
+	}
 }
 
-bool GetTop(SqStack *s, ElemType &e)
+bool GetTop(SqStack *stack_p, ElemType &elem)
 {
-	if(StackEmpty(s))
+	if(StackEmpty(stack_p))
 		return false;
-	e = s->data[s->top];
-	return true;
+	else
+	{
+		elem = stack_p->data[stack_p->top];
+		return true;
+	}
 }
 
 //判断回文算法
 bool symmetry(ElemType *str)
 {
-	int i;
-	ElemType e;
-	SqStack *s;
-	s = (SqStack *)malloc(sizeof(SqStack));
-	for(i=0; str[i]!='\0'; i++)
-		Push(s,str[i]);
-	for(i=0; str[i]!='\0'; i++)
+	int index;
+	ElemType elem;
+	SqStack *stack_p;
+	stack_p = (SqStack *)malloc(sizeof(SqStack));
+	for(index=0; str[index]!='\0'; index++)
+		Push(stack_p,str[index]);
+	for(index=0; str[index]!='\0'; index++)
 	{
-		Pop(s,e);
-		if(e != str[i])
+		Pop(stack_p,elem);
+		if(elem != str[index])
 		{
-			DestroyStack(s);
+			DestroyStack(stack_p);
 			return false;
 		}
 	}
-	DestroyStack(s);
+	DestroyStack(stack_p);
 	return true;
 }

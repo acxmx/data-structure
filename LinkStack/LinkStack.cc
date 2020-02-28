@@ -9,7 +9,7 @@ void InitStack(LinkStNode * &stack_p)
 void DestroyStack(LinkStNode * &stack_p)
 {
 	LinkStNode *pre = stack_p, *p = stack_p->next;
-	while(p)
+	while(p != NULL)
 	{
 		free(pre);
 		pre = p;
@@ -37,11 +37,14 @@ bool Pop(LinkStNode * &stack_p, ElemType &elem)
 	LinkStNode *node_p;
 	if(StackEmpty(stack_p))
 		return false;
+	else
+	{
 	node_p = stack_p->next;
 	elem = node_p->data;
 	stack_p->next = node_p->next;
 	free(node_p);
 	return true;
+	}
 }
 
 bool Match(char *exp)
