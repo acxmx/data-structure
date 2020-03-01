@@ -18,10 +18,15 @@ BTNode * FindLChild(BTNode *);
 BTNode * FindRChild(BTNode *);
 BTNode * FindNode(BTNode *, ElemType);
 int BTreeHeight(BTNode *);
-// traveling binarytree
+//recursive traveling binarytree 
 void PreTravel(BTNode *);
 void InTravel(BTNode *);
 void PostTravel(BTNode *);
+
+//non-recursive traveling
+void PreTravel1(BTNode *);
+void PreTravel2(BTNode *);
+
 //recursion applying
 int NodesCount(BTNode *);
 void DispLeaf(BTNode *);
