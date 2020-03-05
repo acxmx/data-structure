@@ -9,5 +9,7 @@ int main()
 	DispBTree(btree_p);
 	printf("\n非递归前序遍历二叉树：\n");
 	PreTravel2(btree_p);
+	printf("\n非递归中序遍历二叉树：\n");
+	InTravel1(btree_p);
 	return 0;
 }

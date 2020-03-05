@@ -5,9 +5,9 @@ TagBTNode *pre_p;
 void CreateTagBTree(TagBTNode * &btree_p, char *str)
 {
 	TagBTNode *stack[10], *node_p;
-	btree_p = NULL;
 	int top = -1, index = 0, flag;
 	char ch;
+	btree_p = NULL;
 	ch = str[index];
 	while(ch != '\0')
 	{
@@ -76,13 +76,13 @@ void DispTagBTree(TagBTNode *btree_p)
 	}
 }
 
-void Thread(TagBTNode *btree_p)
+void InThread(TagBTNode *btree_p)
 {
 	if(btree_p == NULL)
 		return ;
 	else
 	{
-		Thread(btree_p->lchild);
+		InThread(btree_p->lchild);
 		if(btree_p->lchild == NULL)
 		{
 			btree_p->lchild = pre_p;
@@ -98,11 +98,11 @@ void Thread(TagBTNode *btree_p)
 		else
 			pre_p->rtag = 0;
 		pre_p = btree_p;
-		Thread(btree_p->rchild);
+		InThread(btree_p->rchild);
 	}
 }
 
-TagBTNode * CreateThread(TagBTNode *btree_p)
+TagBTNode * CreateInThread(TagBTNode *btree_p)
 {
 	TagBTNode *root = (TagBTNode *)malloc(sizeof(TagBTNode));
 	root->ltag = 0; root->rtag = 1;
@@ -113,7 +113,7 @@ TagBTNode * CreateThread(TagBTNode *btree_p)
 	{
 		root->lchild = btree_p;
 		pre_p = root;
-		Thread(btree_p);
+		InThread(btree_p);
 		pre_p->rtag = 1;
 		pre_p->rchild = root;
 		root->rchild = pre_p;
@@ -121,7 +121,7 @@ TagBTNode * CreateThread(TagBTNode *btree_p)
 	return root;
 }
 
-void ThreadInTravel(TagBTNode *root)
+void InThreadTravel(TagBTNode *root)
 {
 	TagBTNode *node_p = root->lchild;
 	while(node_p != root)
@@ -137,3 +137,69 @@ void ThreadInTravel(TagBTNode *root)
 		node_p = node_p->rchild;
 	}
 }
+
+void PreThread(TagBTNode * btree_p)
+{
+	if(btree_p == NULL)
+		return ;
+	else
+	{
+		if(btree_p->lchild == NULL)
+		{
+			btree_p->lchild = pre_p;
+			btree_p->ltag = 1;
+		}
+		else
+			btree_p->ltag = 0;
+		if(pre_p->rchild == NULL)
+		{
+			pre_p->rchild = btree_p;
+			pre_p->rtag = 1;
+		}
+		else
+			pre_p->rtag = 0;
+		pre_p = btree_p;
+		if(btree_p->ltag == 0)
+			PreThread(btree_p->lchild);
+		if(btree_p->rtag == 0)
+			PreThread(btree_p->rchild);
+	}
+}
+
+TagBTNode * CreatePreThread(TagBTNode * btree_p)
+{
+	TagBTNode *root = (TagBTNode *)malloc(sizeof(TagBTNode));
+	root->ltag = 0; root->rtag = 1;
+	root->rchild = btree_p;
+	if(btree_p == NULL)
+		root->lchild = root;
+	else
+	{
+		root->lchild = btree_p;
+		pre_p = root;
+		PreThread(btree_p);
+		pre_p->rchild = root;
+		pre_p->rtag = 1;
+		root->rchild = pre_p;
+	}
+	return root;
+}
+
+void PreThreadTravel(TagBTNode *root)
+{
+	TagBTNode *node_p = root->lchild;
+	while(node_p != root)
+	{
+		printf("%c",node_p->data);
+		while(node_p->rtag == 1 && node_p->rchild != root)
+		{
+			node_p = node_p->rchild;
+			printf("%c",node_p->data);
+		}
+		if(node_p->ltag == 0)
+			node_p = node_p->lchild;
+		else
+			node_p = node_p->rchild;
+	}
+}
+

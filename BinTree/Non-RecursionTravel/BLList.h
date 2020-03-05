@@ -26,6 +26,7 @@ void PostTravel(BTNode *);
 //non-recursive traveling
 void PreTravel1(BTNode *);
 void PreTravel2(BTNode *);
+void InTravel1(BTNode *);
 
 //recursion applying
 int NodesCount(BTNode *);

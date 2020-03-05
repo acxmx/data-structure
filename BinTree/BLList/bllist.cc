@@ -1,5 +1,4 @@
-#include"BLList.h"
-#include"SqStack.h"
+#include"bllist.h"
 
 void CreateBTree(BTNode * &btree_p, char *str)
 {
@@ -146,51 +145,6 @@ void PostTravel(BTNode *btree_p)
 		PostTravel(btree_p->rchild);
 		printf("%c",btree_p->data);
 	}
-}
-
-void PreTravel1(BTNode * btree_p)
-{
-	BTNode *node_p;
-	SqStack *stack_p;
-	InitStack(stack_p);
-	if(btree_p != NULL)
-	{
-		Push(stack_p, btree_p);
-		while(!StackEmpty(stack_p))
-		{
-			Pop(stack_p, node_p);
-			printf("%c",node_p->data);
-			if(node_p->rchild != NULL)
-				Push(stack_p, node_p->rchild);
-			if(node_p->lchild != NULL)
-				Push(stack_p, node_p->lchild);
-		}
-		printf("\n");
-	}
-	DestroyStack(stack_p);
-}
-
-void PreTravel2(BTNode *btree_p)
-{
-	BTNode *node_p = btree_p;
-	SqStack *stack_p;
-	InitStack(stack_p);
-	while (!StackEmpty(stack_p) || node_p != NULL)
-	{
-		while (node_p != NULL)
-		{
-			printf("%c", node_p->data);
-			Push(stack_p, node_p);
-			node_p = node_p->lchild;
-		}
-		if (!StackEmpty(stack_p))
-		{
-			Pop(stack_p, node_p);
-			node_p = node_p->rchild;
-		}	
-	}
-	printf("\n");
-	DestroyStack(stack_p);
 }
 
 int NodesCount(BTNode *btree_p)
