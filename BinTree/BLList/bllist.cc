@@ -1,243 +1,256 @@
 #include"bllist.h"
 
-void CreateBTree(BTNode * &btree_p, char *str)
+void CreateBTree(BTNode * &bt, char *str)
 {
-	BTNode *node_stack[50], *node;
-	int top = -1, index = 0, flag;
-	btree_p = NULL;  //尽量在定义指针时进行指针的初始化
-	char ch = str[index];
+	BTNode *stack[50], *p;
+	int top = -1, idx= 0, flag;
+	bt = NULL;
+	char ch = str[idx];
 	while(ch != '\0')
 	{
-		switch(ch)
-		{
-			case '(':
-				top++;
-				node_stack[top] = node;
-				flag = 1;
-				break;
-			case ')':
-				top--;
-				break;
-			case ',':
-				flag = 2;
-				break;
-			default:
-				node = (BTNode *)malloc(sizeof(BTNode));
-				node->data = ch;
-				node->lchild = node->rchild = NULL;  //一定要记得初始化指针域
-				if(!btree_p)
-					btree_p = node;
-				else
-				{
-					switch(flag)
-					{
-						case 1:
-							node_stack[top]->lchild = node;
-							break;
-						case 2:
-							node_stack[top]->rchild = node;
-							break;
-					}
-				}
-				break;
-		}
-		index++;
-		ch = str[index];
-	}
-}
-
-void DestroyBTree(BTNode * &btree_p)
-{
-	if(btree_p != NULL)
-	{
-		DestroyBTree(btree_p->lchild);
-		DestroyBTree(btree_p->rchild);
-		free(btree_p);
-	}
-}
-
-BTNode * FindLChild(BTNode *btree_p)
-{
-	return (btree_p->lchild);
-}
-
-BTNode * FindRChild(BTNode *btree_p)
-{
-	return (btree_p->rchild);
-}
-
-BTNode * FindNode(BTNode *btree_p, ElemType data)
-{
-	if(btree_p == NULL)
-		return NULL;
-	else if(btree_p->data == data)
-		return btree_p;
-	else
-	{
-		BTNode *found_node = FindNode(btree_p->lchild, data);
-		if(found_node)
-			return found_node;
+		switch(ch){
+		case '(':
+		top++;
+		stack[top] = p;
+		flag = 1;
+		break;
+		case ')':
+		top--;
+		break;
+		case ',':
+		flag = 2;
+		break;
+		default:
+		p = (BTNode *)malloc(sizeof(BTNode));
+		p->data = ch;
+		p->lchild = p->rchild = NULL; 
+	
+		if(!bt)
+			bt = p;
 		else
-			return FindNode(btree_p->rchild, data);
+		{
+			switch(flag){
+			case 1:
+			stack[top]->lchild = p;
+			break;
+			case 2:
+			stack[top]->rchild = p;
+			break;
+		}
+		}
+		break;
+		}
+		idx++;
+		ch = str[idx];
 	}
 }
 
-int BTreeHeight(BTNode *btree_p)
+void DestroyBTree(BTNode * bt)
 {
-	if(btree_p == NULL)
-		return 0;
+	if(bt != NULL)
+	{
+		DestroyBTree(bt->lchild);
+		DestroyBTree(bt->rchild);
+		free(bt);
+	}
+}
+
+BTNode * FindNode(BTNode *bt, ElemType e)
+{
+	if(bt == NULL)
+	{
+		return NULL;
+	}
+	else if (bt->data == e)
+	{
+		return bt;
+	}
 	else
 	{
-		int lchild_height = BTreeHeight(btree_p->lchild);
-		int rchild_height = BTreeHeight(btree_p->rchild);
-		return (lchild_height>rchild_height) ? (lchild_height + 1) : (rchild_height + 1);
+		BTNode *p = FindNode(bt->lchild, e);
+		if(p != NULL)
+			return p;
+		else
+			return FindNode(bt->rchild, e);
 	}
 }
 
-void DispBTree(BTNode *btree_p)
+int BTreeHeight(BTNode *bt)
 {
-	if(btree_p != NULL)
+	if(bt == NULL)
 	{
-		printf("%c",btree_p->data);
-		if(btree_p->lchild != NULL
-		|| btree_p->rchild != NULL)
+		return 0;
+	}
+	else
+	{
+		int lh = BTreeHeight(bt->lchild);
+		int rh = BTreeHeight(bt->rchild);
+		return (lh > rh) ? (lh + 1) : (rh + 1);
+	}
+}
+
+void DispBTree(BTNode *bt)
+{
+	if(bt != NULL)
+	{
+		printf("%c",bt->data);
+		if(bt->lchild != NULL || bt->rchild != NULL)
 		{
 			printf("(");
-			DispBTree(btree_p->lchild);
-			if(btree_p->rchild)
-				printf(",");
-			DispBTree(btree_p->rchild);
+			DispBTree(bt->lchild);
+			if(bt->rchild)
+	        		printf(",");
+			DispBTree(bt->rchild);
 			printf(")");
 		}
 	}
 }
 
-void PreTravel(BTNode *btree_p)
+void PreTravel(BTNode *bt)
 {
-	if(btree_p != NULL)
+	if(bt != NULL)
 	{
-		printf("%c",btree_p->data);
-		PreTravel(btree_p->lchild);
-		PreTravel(btree_p->rchild);
+	    printf("%c",bt->data);
+	    PreTravel(bt->lchild);
+	    PreTravel(bt->rchild);
 	}
 #if 0  
+效仿Unix风格，函数尽可能短小，简洁
 此乃递归出口，因为函数返回值是void类型，因此可缺省，由编译器默认执行
 	else
 		return ;
 #endif
 }
 
-void InTravel(BTNode *btree_p)
+void InTravel(BTNode *bt)
 {
-	if(btree_p != NULL)
+	if(bt != NULL)
 	{
-		InTravel(btree_p->lchild);
-		printf("%c",btree_p->data);
-		InTravel(btree_p->rchild);
+	    InTravel(bt->lchild);
+	    printf("%c",bt->data);
+	    InTravel(bt->rchild);
 	}
 }
 
-void PostTravel(BTNode *btree_p)
+void PostTravel(BTNode *bt)
 {
-	if(btree_p != NULL)
+	if(bt != NULL)
 	{
-		PostTravel(btree_p->lchild);
-		PostTravel(btree_p->rchild);
-		printf("%c",btree_p->data);
+		PostTravel(bt->lchild);
+		PostTravel(bt->rchild);
+		printf("%c",bt->data);
 	}
 }
 
-int NodesCount(BTNode *btree_p)
+int NodesCount(BTNode *bt)
 {
-	if(btree_p == NULL)
+	if(bt == NULL)
 		return 0;
 	else
-		return NodesCount(btree_p->lchild)
-		+ NodesCount(btree_p->rchild) + 1;
+		return NodesCount(bt->lchild)
+		+ NodesCount(bt->rchild) + 1;
 }
 
-void DispLeaf(BTNode *btree_p)
+void DispLeaf(BTNode *bt)
 {		
-	if(btree_p != NULL)
+	if(bt != NULL)
 	{
-		if(btree_p->lchild == NULL
-		&& btree_p->rchild == NULL)
-			printf("%c\t",btree_p->data);
+		if(bt->lchild == NULL
+		&& bt->rchild == NULL)
+		{
+			printf("%c\t",bt->data);
+		}
 		else
 		{
-			DispLeaf(btree_p->lchild);
-			DispLeaf(btree_p->rchild);
+			DispLeaf(bt->lchild);
+			DispLeaf(bt->rchild);
 		}
 	}
 }
 
-int Level(BTNode *btree_p, ElemType find_data, int height)
+int Level(BTNode *bt, ElemType find_data, int height)
 {
-	if(btree_p == NULL)
+	if(bt == NULL)
+	{
 		return 0;
-	else if(btree_p->data == find_data)
+	}
+	else if(bt->data == find_data)
+	{
 		return height;
+	}
 	else
 	{
-		int height2 = Level(btree_p->lchild,find_data,height+1);
+		int height2 = Level(bt->lchild,find_data,height+1);
 		if(height2 != 0)
 			return height2;
 		else
-			return (Level(btree_p->rchild,find_data,height+1));
+			return (Level(bt->rchild,find_data,height+1));
 	}
 }
 
 //层级结点数计算 --> 重点在于层级
-void LevelNodesCount(BTNode *btree_p, int height_now, int height_goal
+void LevelNodesCount(BTNode *bt, int height_now, int height_goal
 , int &count)
 {
-	if(btree_p == NULL)
+	if(bt == NULL)
+	{
 		return ;
+	}
 	else
 	{
 		if(height_now == height_goal)
+		{
 			count++;
+		}
 		else if(height_now < height_goal)
 		{
-			LevelNodesCount(btree_p->lchild, height_now+1
+			LevelNodesCount(bt->lchild, height_now+1
 			, height_goal, count);
-			LevelNodesCount(btree_p->rchild, height_now+1
+			LevelNodesCount(bt->rchild, height_now+1
 			, height_goal, count);
 		}
 	}
 }
 
-bool BTreeLike(BTNode *btree_p1, BTNode *btree_p2)
+bool BTreeLike(BTNode *bt1, BTNode *bt2)
 {
-	if(btree_p1 == NULL && btree_p2 == NULL)
+	if(bt1 == NULL && bt2 == NULL)
+	{
 		return true;
-	else if(btree_p1 == NULL || btree_p2 == NULL)
+	}
+	else if(bt1 == NULL || bt2 == NULL)
+	{
 		return false;
+	}
 	else
 	{
-		bool like1 = BTreeLike(btree_p1->lchild, btree_p2->lchild);
-		bool like2 = BTreeLike(btree_p1->rchild, btree_p2->rchild);
+		bool like1 = BTreeLike(bt1->lchild, bt2->lchild);
+		bool like2 = BTreeLike(bt1->rchild, bt2->rchild);
 		return (like1 && like2);
 	}
 }
 
 //输出祖先，那么如何判断祖先呢？祖先的定义、逆向思考：从子孙结点的定义出发
-bool Ancestor(BTNode *btree_p, ElemType data)
+bool Ancestor(BTNode *bt, ElemType data)
 {
-	if(btree_p == NULL)
-		return false;
-	else if(btree_p->lchild != NULL && btree_p->lchild->data == data
-	|| btree_p->rchild != NULL && btree_p->rchild->data == data)
+	if(bt == NULL)
 	{
-		printf("%c",btree_p->data);
+		return false;
+	}
+	else if(bt->lchild != NULL && bt->lchild->data == data
+	|| bt->rchild != NULL && bt->rchild->data == data)
+	{
+		printf("%c",bt->data);
 		return true;
 	}
-	else if(Ancestor(btree_p->lchild, data) 
-	|| Ancestor(btree_p->rchild, data))
+	else if(Ancestor(bt->lchild, data) 
+	|| Ancestor(bt->rchild, data))
 	{
-		printf("%c",btree_p->data);
+		printf("%c",bt->data);
 		return true;
 	}
 	else
+	{
 		return false;
+	}
 }

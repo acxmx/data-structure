@@ -12,10 +12,8 @@ typedef struct node
 }BTNode;
 
 void CreateBTree(BTNode * &, char *);
-void DestroyBTree(BTNode * &);
+void DestroyBTree(BTNode *);
 void DispBTree(BTNode *);
-BTNode * FindLChild(BTNode *);
-BTNode * FindRChild(BTNode *);
 BTNode * FindNode(BTNode *, ElemType);
 int BTreeHeight(BTNode *);
 //recursive traveling binarytree 
@@ -30,5 +28,7 @@ int Level(BTNode *, ElemType, int);
 void LevelNodesCount(BTNode *, int, int, int &);
 bool BTreeLike(BTNode *, BTNode *);
 bool Ancestor(BTNode *, ElemType);
+
+//non-recursion applying
 
 #endif

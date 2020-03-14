@@ -1,0 +1,6 @@
+void LevelTravel(BTNode *bt)
+{
+	BTNode *p;
+	SqQueue *qu;
+	IniQueue(qu);
+}

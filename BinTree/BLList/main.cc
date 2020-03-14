@@ -8,9 +8,6 @@ int main()
 	CreateBTree(btree_p,str);
 	DispBTree(btree_p);
 	printf("\n");
-	printf("根结点的左孩子结点：%p\t"
-	"右孩子结点：%p\n",
-	FindLChild(btree_p),FindRChild(btree_p));
 	printf("值域为'A'的结点的地址：%p\n",
 	FindNode(btree_p,'A'));
 	printf("树高%d\n",BTreeHeight(btree_p));
