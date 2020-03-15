@@ -14,9 +14,9 @@ typedef struct
 void create_list(SqList * &, int [], int);
 void init_list(SqList * &);
 void destroy_list(SqList *);
-bool list_empty(SqList *);
+void print_list(SqList *L);
 int list_length(SqList *);
-void disp_list(SqList *L);
+bool list_empty(SqList *);
 bool list_insert(SqList *, int, int);
 bool list_delete(SqList *, int, int &);
 

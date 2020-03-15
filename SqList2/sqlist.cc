@@ -15,7 +15,7 @@ void init_list(SqList * &L)
 	L->length = 0;
 }
 
-void destroy_list(SqList * &L)
+void destroy_list(SqList * L)
 {
 	free(L);
 }
@@ -30,7 +30,7 @@ int list_length(SqList *L)
 	return L->length;
 }
 
-void disp_list(SqList *L)
+void print_list(SqList *L)
 {
 	int i;
 	printf("顺序表内容如下:\n");

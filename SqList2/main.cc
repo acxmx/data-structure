@@ -7,9 +7,10 @@ int main()
 	int i;
 	create_list(L,a,sizeof(a)/sizeof(int));
 	printf("创建顺序表完成。\n");
-	disp_list(L);
+	print_list(L);
 	partition2(L);
 	printf("partition1:\n");
-	disp_list(L);
+	print_list(L);
+	destroy_list(L);
 	return 0;
 }
