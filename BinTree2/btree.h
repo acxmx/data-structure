@@ -29,4 +29,11 @@ void count_node_levelk(BTNode *, int, int, int&);
 bool is_like(BTNode *, BTNode *);
 bool print_ancestor(BTNode *, int);
 
+void pre_travel1(BTNode *);
+void pre_travel2(BTNode *);
+void in_travel1(BTNode *);
+void post_travel1(BTNode *);
+void level_travel(BTNode *);
+void reverse_path(BTNode *);
+
 #endif

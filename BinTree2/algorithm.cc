@@ -99,3 +99,127 @@ bool print_ancestor(BTNode *bt, int x)
 	else 
 		return false;
 }
+
+//non-recursion travling
+void pre_travel1(BTNode *bt)
+{
+	BTNode *st[30], *p;
+	int top = -1;
+	if (bt != NULL)
+	{
+		st[++top] = bt;
+		while (top != -1)
+		{
+			p = st[top--];
+			printf("%2c", p->data);
+			if (p->rchild != NULL)
+				st[++top] = p->rchild;
+			if (p->lchild != NULL)
+				st[++top] = p->lchild;
+		}
+		printf("\n");
+	}
+}
+
+void pre_travel2(BTNode *bt)
+{
+	BTNode *st[30], *p;
+	int top = -1;
+	p = bt;
+	while (top != -1 || p != NULL)
+	{
+		while (p != NULL)
+		{
+			printf("%2c", p->data);
+			st[++top] = p;
+			p = p->lchild;
+		}
+		if (top != -1)
+		{
+			p = st[top--];
+			p = p->rchild;
+		}
+	}
+	printf("\n");
+}
+
+void in_travel1(BTNode *bt)
+{
+	BTNode *st[30], *p;
+	int top = -1;
+	p = bt;
+	while (top != -1 || p != NULL)
+	{
+		while (p != NULL)
+		{
+			st[++top] = p;
+			p = p->lchild;
+		}
+		if (top != -1)
+		{
+			p = st[top--];
+			printf("%2c", p->data);
+			p = p->rchild;
+		}
+	}
+	printf("\n");
+}
+
+void post_travel1(BTNode *bt)
+{
+	BTNode *st[10], *p, *r;
+	int top = -1;
+	bool flag;
+	p = bt;
+	do
+	{
+		while (p != NULL)
+		{
+			st[++top] = p;
+			p = p->lchild;
+		}
+		r = NULL;
+		flag = true;
+		while (top != -1 && flag)
+		{
+			p = st[top];
+			if (p->rchild == r)
+			{
+				p = st[top--];
+				printf("%2c", p->data);
+				r = p;
+			}else{
+				p = p->rchild;
+				flag = false;
+			}
+		}
+	}while (top != -1);
+	printf("\n");
+}
+
+void level_travel(BTNode *bt)
+{
+	const int MaxSize = 10;
+	BTNode *qu[MaxSize], *p;
+	int front = -1, rear = -1;
+	rear = (rear + 1) % MaxSize;
+	qu[rear] = bt;
+	while (front != rear)
+	{
+		front = (front + 1) % MaxSize;
+		p = qu[front];
+		printf("%2c", p->data);
+		if (p->lchild != NULL)
+		{
+			rear = (rear + 1) % MaxSize;
+			qu[rear] = p->lchild;
+		}
+		if (p->rchild != NULL)
+		{
+			rear = (rear + 1) % MaxSize;
+			qu[rear] = p->rchild;
+		}
+	}
+	printf("\n");
+}
+
