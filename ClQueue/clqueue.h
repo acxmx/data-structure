@@ -21,4 +21,7 @@ int queue_length(ClQueue *);
 bool en_queue(ClQueue *, ElemType);
 bool de_queue(ClQueue *, ElemType &);
 
+//algorithm
+void numberof(char *);
+
 #endif
