@@ -30,6 +30,8 @@ int main()
 	printf("ancestors of node 'G':\n");
 	print_ancestor(bt, 'G');
 	printf("\n");
+	printf("leaf to root:\n");
+	print_reverse_path(bt);
 	destroy_btree(bt);
 	return 0;
 }

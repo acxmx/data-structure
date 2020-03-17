@@ -34,6 +34,6 @@ void pre_travel2(BTNode *);
 void in_travel1(BTNode *);
 void post_travel1(BTNode *);
 void level_travel(BTNode *);
-void reverse_path(BTNode *);
+void print_reverse_path(BTNode *);
 
 #endif

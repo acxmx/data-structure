@@ -223,3 +223,43 @@ void level_travel(BTNode *bt)
 	printf("\n");
 }
 
+void print_reverse_path(BTNode *bt)
+{
+	const int MaxSize = 10;
+	BTNode *st[MaxSize], *p, *r;
+	int top = -1;
+	bool flag;
+	p = bt;
+	do
+	{
+		while (p != NULL)
+		{
+			st[++top] = p;
+			p = p->lchild;
+		}
+		r = NULL;
+		flag = true;
+		while (top != -1 && flag)
+		{
+			p = st[top];
+			if (p->rchild == r)
+			{
+				if (p->lchild == NULL && p->rchild == NULL)
+				{
+					int i;
+					for (i=top; i>-1; i--)
+						printf("%2c", st[i]->data);
+					printf("\n");
+				}
+				top--;
+				r = p;
+			}
+			else
+			{
+				p = p->rchild;
+				flag = false;
+			}
+		}
+	}while (top != -1);
+	printf("\n");
+}
