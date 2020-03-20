@@ -56,4 +56,7 @@ void print_adjgraph(AdjGraph *);
 void Mat_to_List(MatGraph *, AdjGraph *&);
 void List_to_Mat(AdjGraph *, MatGraph *&);
 
+void DFS(AdjGraph *, int);
+void BFS(AdjGraph *, int);
+
 #endif

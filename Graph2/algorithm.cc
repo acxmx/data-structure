@@ -45,3 +45,46 @@ void List_to_Mat(AdjGraph *AG, MatGraph * &MG)
 	MG->n = AG->n;
 	MG->e = AG->e;
 }
+
+int visited[MAXV] = {0};
+void DFS(AdjGraph *G, int v)
+{
+	ArcNode *p;
+	printf("%2d", v);
+	visited[v] = 1;
+	p = G->adjlist[v].firstarc;
+	while (p != NULL)
+	{
+		if (visited[p->adjvex] == 0)
+			DFS(G, p->adjvex);
+		p = p->nextarc;
+	}
+}
+
+void BFS(AdjGraph *G, int v)
+{
+	int qu[MAXV], front = -1, rear = -1;
+	int visited[MAXV] = {0};
+	ArcNode *p;
+	printf("%2d", v);
+	visited[v] = 1;
+	rear = (rear + 1) % MAXV;
+	qu[rear] = v;
+	while (front < rear)
+	{
+		front = (front + 1) % MAXV;
+		p = G->adjlist[qu[front]].firstarc;
+		while (p != NULL)
+		{
+			if (visited[p->adjvex] == 0)
+			{
+				printf("%2d", p->adjvex);
+				rear = (rear + 1) % MAXV;
+				qu[rear] = p->adjvex;
+				visited[p->adjvex] = 1;
+			}
+			p = p->nextarc;
+		}
+	}
+	printf("\n");
+}
