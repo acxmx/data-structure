@@ -79,12 +79,129 @@ void BFS(AdjGraph *G, int v)
 			if (visited[p->adjvex] == 0)
 			{
 				printf("%2d", p->adjvex);
+				visited[p->adjvex] = 1;
 				rear = (rear + 1) % MAXV;
 				qu[rear] = p->adjvex;
-				visited[p->adjvex] = 1;
 			}
 			p = p->nextarc;
 		}
+	}
+	printf("\n");
+}
+
+void restore(int visited[], int n)
+{
+	int i;
+	for (i=0; i<n; i++)
+		visited[i] = 0;
+}
+
+void find_all_smppath(AdjGraph *G, int u, int v)
+{
+	int path[MAXV];
+	dfs_smp(G, u, v, path, -1);
+}
+
+void dfs_smp(AdjGraph *G, int u, int v, int path[], int d)
+{
+	ArcNode *p;
+	visited[u] = 1;
+	path[++d] = u;
+	if (u == v)
+	{
+		int i;
+		for (i=0; i<=d; i++)
+			printf("%2d", path[i]);
+		printf("\n");
+	}
+	p = G->adjlist[u].firstarc;
+	while (p != NULL)
+	{
+		if (visited[p->adjvex] == 0)
+			dfs_smp(G, p->adjvex, v, path, d);
+		p = p->nextarc;
+	}
+	visited[u] = 0;
+}
+
+void find_all_cycpath(AdjGraph *G, int k)
+{
+	int path[MAXV];
+	dfs_cyc(G, k, k, path, -1);
+}
+
+void dfs_cyc(AdjGraph *G, int u, int v, int path[], int d)
+{
+	ArcNode *p;
+	visited[u] = 1;
+	path[++d] = u;
+	p = G->adjlist[u].firstarc;
+	while (p != NULL)
+	{  // variable d is setting for undirected graph
+		if (p->adjvex == v && d>1)
+		{
+			int i;
+			for (i=0; i<=d; i++)
+				printf("%2d", path[i]);
+			printf("%2d\n", v);
+		}
+		if (visited[p->adjvex] == 0)
+			dfs_cyc(G, p->adjvex, v, path, d);
+		p = p->nextarc;
+	}
+	visited[u] = 0;
+}
+
+//the shortest path algorithm
+void find_shortest_path(AdjGraph *G, int u, int v)
+{
+	QuNode qu[MAXV];
+	int front = -1, rear = -1;
+	int w;
+	ArcNode *p;
+	visited[u] = 1;
+	rear++;
+	qu[rear].data = u;
+	qu[rear].parent = -1;
+	while (front != rear)
+	{
+		front++;
+		w = qu[front].data;
+		if (w == v)
+		{
+			print_shortest_path(qu, front);
+			return ;
+		}
+		p = G->adjlist[w].firstarc;
+		while (p != NULL)
+		{
+			if (visited[p->adjvex] == 0)
+			{
+				visited[p->adjvex] = 1;
+				rear++;
+				qu[rear].data = p->adjvex;
+				qu[rear].parent = front;
+			}
+			p = p->nextarc;
+		}
+	}
+}
+
+void print_shortest_path(QuNode qu[], int front)
+{
+	int i = front, tmp, k;
+	while (i != 0)
+	{
+		tmp = qu[i].parent;
+		qu[i].parent = -1;
+		i = tmp;
+	}
+	k = 0;
+	while (k < MAXV)
+	{
+		if (qu[k].parent == -1)
+			printf("%2d", qu[k].data);
+		k++;
 	}
 	printf("\n");
 }

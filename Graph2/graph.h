@@ -6,6 +6,8 @@
 #define MAXV 5
 #define IFN 255
 
+extern int visited[];
+
 typedef char InfoType;
 
 //adjacency matrix:
@@ -58,5 +60,22 @@ void List_to_Mat(AdjGraph *, MatGraph *&);
 
 void DFS(AdjGraph *, int);
 void BFS(AdjGraph *, int);
+void restore(int [], int n);
+
+//find all simple path without regard to cycle path
+void find_all_smppath(AdjGraph *, int, int);
+void dfs_smp(AdjGraph *, int, int, int [], int);
+//find all simple cycle path
+void find_all_cycpath(AdjGraph *, int);
+void dfs_cyc(AdjGraph *, int, int, int [], int);
+
+//find shortest path algorithm
+typedef struct
+{
+	int data;
+	int parent;
+}QuNode;
+void find_shortest_path(AdjGraph *, int, int);
+void print_shortest_path(QuNode [], int);
 
 #endif
