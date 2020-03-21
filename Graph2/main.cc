@@ -25,6 +25,8 @@ int main()
 	restore(visited, MAXV);
 	printf("the shortest path fromt 2 to 4 is :\n");
 	find_shortest_path(AG, 2, 4);
+	printf("the vertex farthest from 3 is : %d\n", 
+	find_farthest_vertex(AG, 3));
 //	MatGraph *MG;
 //	create_matgraph(MG, g);
 //	print_matgraph(MG);

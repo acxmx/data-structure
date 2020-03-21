@@ -205,3 +205,30 @@ void print_shortest_path(QuNode qu[], int front)
 	}
 	printf("\n");
 }
+
+int find_farthest_vertex(AdjGraph *G, int v)
+{
+	int qu[MAXV], front = -1, rear = -1;
+	int visited[MAXV] = {0}, w;
+	ArcNode *p;
+	visited[v] = 1;
+	rear = (rear + 1) % MAXV;
+	qu[rear] = v;
+	while (front != rear)
+	{
+		front = (front + 1) % MAXV;
+		w = qu[front];
+		p = G->adjlist[w].firstarc;
+		while (p != NULL)
+		{
+			if (visited[p->adjvex] == 0)
+			{
+				visited[p->adjvex] = 1;
+				rear = (rear + 1) % MAXV;
+				qu[rear] = p->adjvex;
+			}
+			p = p->nextarc;
+		}
+	}
+	return w;
+}

@@ -78,4 +78,7 @@ typedef struct
 void find_shortest_path(AdjGraph *, int, int);
 void print_shortest_path(QuNode [], int);
 
+//find farthest vertex
+int find_farthest_vertex(AdjGraph *, int);
+
 #endif
