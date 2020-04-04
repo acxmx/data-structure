@@ -6,6 +6,9 @@
 
 #define MazeSize 8
 
+extern int visited[][MazeSize+2];
+extern int cnt;
+
 typedef struct node
 {
 	int i, j;

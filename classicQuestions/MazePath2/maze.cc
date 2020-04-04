@@ -71,6 +71,7 @@ void destroy_adjgraph(AdjGraph *G)
 }
 
 int visited[MazeSize+2][MazeSize+2] = {0};
+int cnt=0;
 
 void DFS(AdjGraph *G, int xi, int yi, int xe, int ye, Path path[], int d)
 {
@@ -89,7 +90,8 @@ void DFS(AdjGraph *G, int xi, int yi, int xe, int ye, Path path[], int d)
 				printf("\n");
 			printf("(%d,%d)\t", path[i].i, path[i].j);
 		}
-		return ;
+		printf("\n");
+		cnt++;
 	}
 	p = G->adjlist[xi][yi].firstarc;
 	while (p != NULL)
@@ -98,4 +100,5 @@ void DFS(AdjGraph *G, int xi, int yi, int xe, int ye, Path path[], int d)
 			DFS(G, p->i, p->j, xe, ye, path, d);
 		p = p->nextarc;
 	}
+	visited[xi][yi] = 0;
 }
