@@ -10,6 +10,10 @@ void print_arr(int *, int);
 bool less_than(int, int);
 bool greater_than(int, int);
 
-void insert_sort(int *, int, bool (*)(int, int));
+void insert_sort(int *, int, bool (*) (int, int));
+void bin_sort(int *, int, bool (*) (int, int));
+void shell_sort(int *, int, bool (*) (int, int));
+
+void bubble_sort(int *, int, bool (*) (int, int));
 
 #endif
