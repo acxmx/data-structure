@@ -9,7 +9,8 @@ int main(void)
 	int arr[] = {44,13,24,13,56,84,15};
 	printf("before sort:\n");
 	print_arr(arr, sizeof(arr)/sizeof(int));
-	bubble_sort(arr, sizeof(arr)/sizeof(int), greater_than);
+	//bubble_sort(arr, sizeof(arr)/sizeof(int), greater_than);
+	quick_sort(arr, 0, sizeof(arr)/sizeof(int)-1, less_than);
 	print_arr(arr, sizeof(arr)/sizeof(int));
 	return 0;
 }

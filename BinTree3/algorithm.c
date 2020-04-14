@@ -96,3 +96,267 @@ int find_node_level(BTNode *bt, ElemType x, int h)
 			return find_node_level(bt->rchild, x, h+1);
 	}
 }
+/*
+void count_node_k(BTNode *bt, int k, int h)
+{
+	if (bt == NULL)
+		return ;
+	else if (h == k)
+		cnt++;
+	else if (h < k)
+	{
+		count_node_k(bt->lchild, k, h+1);
+		count_node_k(bt->rchild, k, h+1);
+	}
+}
+*/
+
+void count_node_k2(BTNode *bt, int k, int h, int *cp)
+{
+	if (bt == NULL)
+		return ;
+	else if (h == k)
+		(*cp)++;
+	else if (h < k)
+	{
+		count_node_k2(bt->lchild, k, h+1, cp);
+		count_node_k2(bt->rchild, k, h+1, cp);
+	}
+}
+
+bool is_like(BTNode *bt1, BTNode *bt2)
+{
+	if (bt1 == NULL && bt2 == NULL)
+		return true;
+	else if (bt1 == NULL || bt2 == NULL)
+		return false;
+	else
+	{
+		bool like1 = is_like(bt1->lchild, bt2->lchild);
+		bool like2 = is_like(bt1->rchild, bt2->rchild);
+		return (like1 && like2);
+	}
+}
+
+bool print_ancestor(BTNode *bt, ElemType x)
+{
+	if (bt == NULL)
+		return false;
+	else if (bt->lchild != NULL && bt->lchild->data == x
+	|| bt->rchild != NULL && bt->rchild->data == x)
+	{
+		printf("%c ", bt->data);
+		return true;
+	}
+	else if (print_ancestor(bt->lchild, x)
+	|| print_ancestor(bt->rchild, x))
+	{
+		printf("%c ", bt->data);
+		return true;
+	}
+	else
+		return false;
+}
+
+void pre_travel1(BTNode *bt)
+{
+	BTNode *stack[10], *p;
+	int top = -1;
+	p = bt;
+	while (top != -1 || p != NULL)
+	{
+		while (p != NULL)
+		{
+			printf("%c ", p->data);
+			stack[++top] = p;
+			p = p->lchild;
+		}
+		if (top != -1)
+		{
+			p = stack[top--];
+			p = p->rchild;
+		}
+	}
+	printf("\n");
+}
+
+void pre_travel2(BTNode *bt)
+{
+	BTNode *stack[10], *p;
+	int top = -1;
+	if (bt != NULL)
+	{
+		stack[++top] = bt;
+		while (top != -1)
+		{
+			p = stack[top--];
+			printf("%c ", p->data);
+			if (p->rchild != NULL)
+				stack[++top] = p->rchild;
+			if (p->lchild != NULL)
+				stack[++top] = p->lchild;
+		}
+	}
+	printf("\n");
+}
+
+void in_travel1(BTNode *bt)
+{
+	BTNode *stack[10], *p;
+	int top = -1;
+	p = bt;
+	while (top != -1 || p != NULL)
+	{
+		while (p != NULL)
+		{
+			stack[++top] = p;
+			p = p->lchild;
+		}
+		if (top != -1)
+		{
+			p = stack[top--];
+			printf("%c ", p->data);
+			p = p->rchild;
+		}
+	}
+	printf("\n");
+}
+
+void post_travel1(BTNode *bt)
+{
+	BTNode *stack[10], *p, *r;
+	int top = -1;
+	bool flag;
+	p = bt;
+	do
+	{
+		while (p != NULL)
+		{
+			stack[++top] = p;
+			p = p->lchild;
+		}
+		r = NULL;
+		flag = true;
+		while (top != -1 && flag)
+		{
+			p = stack[top];
+			if (p->rchild == r)
+			{
+				printf("%c ", p->data);
+				r = p;
+				top--;
+			}
+			else
+			{
+				p = p->rchild;
+				flag = false;
+			}
+		}
+	}while (top != -1);
+	printf("\n");
+}
+
+void print_ancestor1(BTNode *bt)
+{
+	BTNode *stack[10], *p, *r;
+	int top = -1, i;
+	bool flag;
+	p = bt;
+	do
+	{
+		while (p != NULL)
+		{
+			stack[++top] = p;
+			p = p->lchild;
+		}
+		r = NULL;
+		flag = true;
+		while (top != -1 && flag)
+		{
+			p = stack[top];
+			if (p->rchild == r)
+			{
+				if (p->lchild == NULL && p->rchild == NULL)
+				{
+					i = top-1;
+					printf("%c: ", p->data);
+					while (i != -1)
+						printf("%c ", 
+						stack[i--]->data);
+					printf("\n");
+				}
+				r = p;
+				top--;
+			}
+			else
+			{
+				p = p->rchild;
+				flag = false;
+			}
+		}
+	}while (top != -1);
+	printf("\n");
+}
+
+void level_travel(BTNode *bt)
+{
+	BTNode *queue[5], *p;
+	int front, rear;
+	front = rear = -1;
+	if (bt == NULL)
+		return ;
+	rear = (rear + 1) % 5;
+	queue[rear] = bt;
+	while (front != rear)
+	{
+		front = (front + 1) % 5;
+		p = queue[front];
+		printf("%c ", p->data);
+		if (p->lchild != NULL)
+		{
+			rear = (rear + 1) % 5;
+			queue[rear] = p->lchild;
+		}
+		if (p->rchild != NULL)
+		{
+			rear = (rear + 1) % 5;
+			queue[rear] = p->rchild;
+		}
+	}
+	printf("\n");
+}
+
+// recursion creating binary tree
+BTNode *create_bt1(char *pre, char *in, int n)
+{
+	BTNode *bt;
+	char *p;
+	int k;
+	if (n <= 0) return NULL;
+	bt = (BTNode *)malloc(sizeof(BTNode));
+	bt->data = *pre;
+	for (p = in; p < in+n; p++)
+		if (*p == *pre)
+			break;
+	k = p - in;
+	bt->lchild = create_bt1(pre+1, in, k);
+	bt->rchild = create_bt1(pre+1+k, p+1, n-k-1);
+	return bt;
+}
+
+BTNode *create_bt2(char *post, char *in, int n)
+{
+	BTNode *bt;
+	char *p;
+	int k;
+	if (n <= 0) return NULL;
+	bt = (BTNode *)malloc(sizeof(BTNode));
+	bt->data = *(post+n-1);
+	for (p = in; p < in+n; p++)
+		if (*p == *(post+n-1))
+			break;
+	k = p - in;
+	bt->lchild = create_bt2(post, in, k);
+	bt->rchild = create_bt2(post+k, p+1, n-k-1);
+	return bt;
+}

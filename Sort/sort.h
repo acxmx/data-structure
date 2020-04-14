@@ -15,5 +15,7 @@ void bin_sort(int *, int, bool (*) (int, int));
 void shell_sort(int *, int, bool (*) (int, int));
 
 void bubble_sort(int *, int, bool (*) (int, int));
+void quick_sort(int *, int, int, bool (*) (int, int));
+int partition(int *, int, int, bool (*) (int, int));
 
 #endif

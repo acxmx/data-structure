@@ -87,6 +87,36 @@ void print_arr(int *arr, int n)
 	printf("\n");
 }
 
+void quick_sort(int *arr, int s, int t, bool (*fp) (int, int))
+{
+	if (s < t)
+	{
+		int mid = (s + t) / 2;
+		swap(arr, s, mid);
+		int i = partition(arr, s, t, fp);
+		quick_sort(arr, s, i-1, fp);
+		quick_sort(arr, i+1, t, fp);
+	}
+}
+
+int partition(int *arr, int low, int high, bool (*fp) (int, int))
+{
+	int i = low, j = high;
+	int pivot = *(arr + low);
+	while (i < j)
+	{
+		while (j > i && !fp(*(arr+j), pivot))
+			j--;
+		*(arr+i) = *(arr+j);
+		while (i < j && (fp(*(arr+i), pivot) || *(arr+i) == pivot))
+			i++;
+		*(arr+j) = *(arr+i);
+	}
+	*(arr+i) = pivot;
+	return i;
+	
+}
+
 bool less_than(int a, int b)
 {
 	return (a < b);
