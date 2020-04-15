@@ -65,6 +65,18 @@ int count_node(BTNode *bt)
 		count_node(bt->rchild) + 1);
 }
 
+int count_dbnode(BTNode *bt)
+{
+	if (bt == NULL)
+		return 0;
+	else if (bt->lchild != NULL && bt->rchild != NULL)
+		return (1 + count_dbnode(bt->lchild)
+			+ count_dbnode(bt->rchild));
+	else
+		return (count_dbnode(bt->lchild)
+		+ count_dbnode(bt->rchild));
+}
+
 void print_leaf(BTNode *bt)
 {
 	if (bt == NULL)
@@ -326,6 +338,34 @@ void level_travel(BTNode *bt)
 	printf("\n");
 }
 
+//获取层次结点数
+void get_width(BTNode *bt, int h, int wd[])
+{
+    if (bt == NULL)
+        return ;
+    else
+    {
+        wd[h]++;
+        get_width(bt->lchild, h+1, wd);
+        get_width(bt->rchild, h+1, wd);
+    }
+}
+
+//简单选择思想求出树宽
+int btree_width(BTNode *bt)
+{
+    int i, n, max;
+    n = btree_height(bt);		//求出树高
+    int wd[n+1];		//定义数组保存树宽信息
+    for (i = 0; i < n+1; i++)
+	wd[i] = 0;
+    get_width(bt, 1, wd);
+    for (i = 1, max = 0; i <= n; i++)
+        if (max < wd[i])
+            max = wd[i];
+    return max;
+}
+
 // recursion creating binary tree
 BTNode *create_bt1(char *pre, char *in, int n)
 {
@@ -359,4 +399,56 @@ BTNode *create_bt2(char *post, char *in, int n)
 	bt->lchild = create_bt2(post, in, k);
 	bt->rchild = create_bt2(post+k, p+1, n-k-1);
 	return bt;
+}
+
+int btree_width2(BTNode *bt)
+{
+    typedef struct
+    {
+        int lvl;
+        BTNode *p;
+    }Nodequ;
+    int front, rear, width, i, lct, nct;
+    int n = count_node(bt);
+    Nodequ qu[n], tp;
+    front = rear = -1;
+    if (bt != NULL)
+    {
+        rear++;
+        qu[rear].p = bt;
+        qu[rear].lvl = 1;
+        while (front != rear)
+        {
+            front++;
+            tp = qu[front];
+            if (tp.p->lchild != NULL)
+            {
+                rear++;
+                qu[rear].p = tp.p->lchild;
+                qu[rear].lvl = tp.lvl + 1;
+            }
+            if (tp.p->rchild != NULL)
+            {
+                rear++;
+                qu[rear].p = tp.p->rchild;
+                qu[rear].lvl = tp.lvl + 1;
+            }
+        }
+        width = i = 0;
+        lct = 0;
+        while (i <= rear)
+        {
+            nct = 0;
+            lct++;
+            while (i <= rear && qu[i].lvl == lct)
+            {
+                nct++;
+                i++;
+            }
+            if (width < nct)
+                width = nct;
+        }
+        return width;
+    }
+    return 0;
 }

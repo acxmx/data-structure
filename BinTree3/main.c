@@ -13,6 +13,7 @@ int main(void)
 	else
 		printf("no find!\n");
 	printf("btree's height:%d\n", btree_height(bt));
+	printf("btree's width:%d\n", btree_width2(bt));
 	printf("preorder travel:\n");
 	pre_travel(bt);
 	printf("\ninorder travel:\n");
@@ -29,6 +30,7 @@ int main(void)
 	printf("level 3 node sum: %d\n", cnt);
 	printf("all ancestor of every leaf node :\n");
 	print_ancestor1(bt);
+	printf("double branch node sum:%d\n", count_dbnode(bt));
 	printf("ancestor of node 'G':\n");
 	print_ancestor(bt, 'G');
 	printf("\nnon-recursion travling:\n");
