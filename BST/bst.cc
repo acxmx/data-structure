@@ -12,6 +12,18 @@ BSTNode *create_bst(KeyType R[], int n)
 	return bt;
 }
 
+BSTNode *create_bst2(KeyType *arr, int n)
+{
+	BSTNode *bst = NULL;
+	int i = 0;
+	while (i < n)
+	{
+		insert_bst2(&bst, *(arr+i));
+		i++;
+	}
+	return bst;
+}
+
 bool insert_bst(BSTNode * &bt, KeyType k)
 {
 	if (bt == NULL)
@@ -33,6 +45,23 @@ bool insert_bst(BSTNode * &bt, KeyType k)
 	{
 		return insert_bst(bt->rchild, k);
 	}
+}
+
+bool insert_bst2(BSTNode **bstp, KeyType key)
+{
+	if (*bstp == NULL)
+	{
+		*bstp = (BSTNode *)malloc(sizeof(BSTNode));
+		(*bstp)->key = key;
+		(*bstp)->lchild = (*bstp)->rchild = NULL;
+		return true;
+	}
+	else if ((*bstp)->key == key)
+		return false;
+	else if (key < (*bstp)->key)
+		return insert_bst2(&(*bstp)->lchild, key);
+	else
+		return insert_bst2(&(*bstp)->rchild, key);
 }
 
 void print_bst(BSTNode *bt)
@@ -106,6 +135,55 @@ void delete2(BSTNode *p, BSTNode * &r)
 		p->key = r->key;
 		p->data = r->data;
 		r = r->lchild;
+		free(q);
+	}
+}
+
+bool delete_bst2(BSTNode **bstp, KeyType key)
+{
+	if (*bstp == NULL)
+		return false;
+	else if ((*bstp)->key == key)
+	{
+		delete1_2(bstp);
+		return true;
+	}
+	else if (key < (*bstp)->key)
+		return delete_bst2(&(*bstp)->lchild, key);
+	else
+		return delete_bst2(&(*bstp)->rchild, key);
+}
+
+void delete1_2(BSTNode **bstp)
+{
+	BSTNode *q;
+	if ((*bstp)->rchild == NULL)
+	{
+		q = *bstp;
+		*bstp = (*bstp)->lchild;
+		free(q);
+	}
+	else if ((*bstp)->lchild == NULL)
+	{
+		q = *bstp;
+		*bstp = (*bstp)->rchild;
+		free(q);
+	}
+	else 
+		delete2_2(*bstp, &(*bstp)->lchild);
+}
+
+void delete2_2(BSTNode *bst, BSTNode **rp)
+{
+	BSTNode *q;
+	if ((*rp)->rchild != NULL)
+		delete(bst, &(*rp)->rchild);
+	else
+	{
+		bst->data = (*rp)->data;
+		bst->key = (*rp)->key;
+		q = *rp;
+		*rp = (*rp)->lchild;
 		free(q);
 	}
 }
