@@ -3,8 +3,11 @@
 
 #include<stdio.h>
 #include<stdlib.h>
+#include<queue>
 
-#define MAXV 5
+using namespace std;
+
+#define MAXV 11
 #define IFN 65535
 
 typedef struct node
@@ -30,5 +33,10 @@ void create(adjGraph * *, double *, int, int);
 void add(vexNode *, int, double);
 void print(adjGraph *);
 void destroy(adjGraph *);
+
+extern int visited[MAXV];
+void dfs(adjGraph *, int);
+
+void bfs(adjGraph *, int);
 
 #endif

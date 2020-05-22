@@ -82,3 +82,53 @@ void destroy(adjGraph *graph)
     }
     free(graph);
 }
+
+int visited[MAXV];
+
+void dfs(adjGraph *graph, int start)
+{
+    arcNode *pNode = NULL;
+    
+    printf("%d->", start);
+    visited[start] = 1;
+    pNode = graph->vertexs[start].firstArc;
+
+    while (pNode != NULL)
+    {
+        int nextVex = pNode->adjVertex;
+        if (visited[nextVex] == 0)
+            dfs(graph, nextVex);
+        pNode = pNode->nextArc;
+    }
+}
+
+void bfs(adjGraph *graph, int start)
+{
+    int i;
+    int visited[MAXV];
+    queue<int> myQueue;
+    for (i = 0; i < graph->vex_count; ++i)
+        visited[i] = 0;
+    printf("%d->", start);
+    visited[start] = 1;
+    myQueue.push(start);
+
+    while (!myQueue.empty())
+    {
+        int frontVex = myQueue.front();
+        myQueue.pop();
+        arcNode *pNode = graph->vertexs[frontVex].firstArc;
+
+        while (pNode != NULL)
+        {
+            int adjVex = pNode->adjVertex;
+            if (visited[adjVex] == 0)
+            {
+                printf("%d->", adjVex);
+                visited[adjVex] = 1;
+                myQueue.push(adjVex);
+            }
+            pNode = pNode->nextArc;
+        }
+    }
+}
